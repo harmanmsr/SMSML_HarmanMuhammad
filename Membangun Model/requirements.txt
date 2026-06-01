@@ -1,0 +1,22 @@
+# ============================================================
+# requirements.txt — K-Means Clustering Sepatu Wanita
+# Notebook: load data → preprocessing → elbow → training →
+#           evaluasi silhouette → analisis cluster → PCA viz
+# ============================================================
+
+# Data manipulation
+pandas==3.0.2
+numpy==2.4.4
+
+# Machine learning
+scikit-learn==1.8.0
+
+# Visualisasi
+matplotlib==3.10.8
+seaborn==0.13.2
+
+# Model persistence (opsional: simpan scaler & encoder)
+joblib==1.5.3
+
+# Deteksi elbow otomatis (opsional, dipakai di bagian elbow method)
+kneed>=0.8.5
