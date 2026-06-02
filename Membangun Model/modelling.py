@@ -39,7 +39,7 @@ mlflow.set_experiment(EXPERIMENT_NAME)
 
 # ── 1. Load Data ──────────────────────────────────────────────────────────────
 print("Membaca dataset...")
-df = pd.read_csv("Womens_Shoes_Clean.csv")
+df = pd.read_csv("data/Womens_Shoes_Clean.csv")
 print(f"Shape: {df.shape}")
 
 
