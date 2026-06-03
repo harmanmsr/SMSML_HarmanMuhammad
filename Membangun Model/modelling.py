@@ -1,4 +1,5 @@
 import os
+import argparse
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -17,19 +18,34 @@ from sklearn.decomposition import PCA
 import mlflow
 import mlflow.sklearn
 
+# ── Argument Parser (untuk MLflow Project) ───────────────────────────────────
+parser = argparse.ArgumentParser()
+parser.add_argument("--k_optimal",    type=int,   default=4)
+parser.add_argument("--random_state", type=int,   default=42)
+parser.add_argument("--data_path",    type=str,   default="data/Womens_Shoes_Clean.csv")
+args = parser.parse_args()
+
 # ── Konfigurasi MLflow ────────────────────────────────────────────────────────
-MLFLOW_TRACKING_URI = "http://127.0.0.1:5000"
+MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://127.0.0.1:5000")
 EXPERIMENT_NAME     = "KMeans-Womens-Shoes"
-K_OPTIMAL           = 4
-RANDOM_STATE        = 42
+K_OPTIMAL           = args.k_optimal
+RANDOM_STATE        = args.random_state
+DATA_PATH           = args.data_path
 
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
-mlflow.set_experiment(EXPERIMENT_NAME)
+
+# ── Autolog ───────────────────────────────────────────────────────────────────
+mlflow.sklearn.autolog(
+    log_input_examples=True,
+    log_model_signatures=True,
+    log_models=True,
+    silent=True
+)
 
 
 # ── 1. Load Data ──────────────────────────────────────────────────────────────
 print("Membaca dataset...")
-df = pd.read_csv("data/Womens_Shoes_Clean.csv")
+df = pd.read_csv(DATA_PATH)
 print(f"Shape: {df.shape}")
 
 
@@ -204,14 +220,6 @@ with mlflow.start_run(run_name=f"kmeans_k{K_OPTIMAL}") as run:
     mlflow.log_artifact(elbow_path,  artifact_path="plots")
     mlflow.log_artifact(pca_path,    artifact_path="plots")
     mlflow.log_artifact(csv_path,    artifact_path="outputs")
-
-    # ── Log model sklearn
-    mlflow.sklearn.log_model(
-        sk_model       = km,
-        artifact_path  = "model",
-        registered_model_name = "KMeans-Womens-Shoes",
-        input_example  = X_scaled[:5],
-    )
 
     run_id = run.info.run_id
     print(f"\nRun selesai!")
