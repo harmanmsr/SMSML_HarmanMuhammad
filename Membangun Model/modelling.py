@@ -1,13 +1,3 @@
-"""
-mlflow_kmeans_shoes.py
-======================
-Jalankan script ini di direktori yang sama dengan 'Womens_Shoes_Clean.csv'.
-MLflow UI harus sudah berjalan di localhost:5000.
-
-Cara pakai:
-    python mlflow_kmeans_shoes.py
-"""
-
 import os
 import warnings
 warnings.filterwarnings("ignore")
@@ -28,7 +18,7 @@ import mlflow
 import mlflow.sklearn
 
 # ── Konfigurasi MLflow ────────────────────────────────────────────────────────
-MLFLOW_TRACKING_URI = "http://localhost:5000"
+MLFLOW_TRACKING_URI = "http://127.0.0.1:5000"
 EXPERIMENT_NAME     = "KMeans-Womens-Shoes"
 K_OPTIMAL           = 4
 RANDOM_STATE        = 42
